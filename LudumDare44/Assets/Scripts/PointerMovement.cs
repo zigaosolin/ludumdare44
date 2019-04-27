@@ -44,7 +44,6 @@ public class PointerMovement : MonoBehaviour
         camera = Camera.main;
     }
 
-
     void FixedUpdate()
     {
         var position = camera.ScreenToWorldPoint(Input.mousePosition);
@@ -85,5 +84,10 @@ public class PointerMovement : MonoBehaviour
         Trace.Info(TraceCategory.PointerMovement, $"Movement added: {movementState}");
 
         pointerView.SetView(movementState);
+    }
+
+    public (Vector2 targetLocation, bool isInJumpMovement) GetTarget()
+    {
+        return (movements[movements.Count - 1].Position, false);
     }
 }

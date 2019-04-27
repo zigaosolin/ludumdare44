@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
+        var (targetPosition, isInJumpMovement) = pointerMovement.GetTarget();
+
+        var currentPosition = transform.position;
+        transform.position = Vector2.Lerp(currentPosition, targetPosition, Time.deltaTime * normalInterpolateSpeed);
     }
 }

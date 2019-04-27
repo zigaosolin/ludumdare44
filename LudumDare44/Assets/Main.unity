@@ -319,7 +319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 765539214}
   pointerMovement: {fileID: 1924147756}
-  normalInterpolateSpeed: 3
+  normalInterpolateSpeed: 6
 --- !u!114 &765539217
 MonoBehaviour:
   m_ObjectHideFlags: 0
