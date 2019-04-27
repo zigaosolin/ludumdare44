@@ -24,7 +24,7 @@ public struct PointerMovementState
 
 public class PointerMovement : MonoBehaviour
 {
-    private const int NumberOfStatesKept = 120;
+    private const int NumberOfStatesKept = 360;
     private const int FramesInNormalToStopJump = 5;
     private List<PointerMovementState> movements;
     private Camera camera;
@@ -46,10 +46,10 @@ public class PointerMovement : MonoBehaviour
 
     private void Start()
     {
-        camera = Camera.main;
+        camera = Camera.main;       
     }
 
-    void Update()
+    void FixedUpdate()
     {
         var position = camera.ScreenToWorldPoint(Input.mousePosition);
         position.z = 0;

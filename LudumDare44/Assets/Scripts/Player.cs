@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float normalInterpolateSpeed = 3;
 
     private bool wasPreviousInJump = false;
-
     private List<DamageAreaData> enteredAreas = new List<DamageAreaData>();
 
     private void Awake()
