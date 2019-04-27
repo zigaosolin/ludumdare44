@@ -3,7 +3,8 @@ using UnityEngine;
 
 public enum TraceCategory
 {
-    PointerMovement
+    None = 0,
+    PointerMovement = 1
 }
 
 public static class Trace 

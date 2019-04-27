@@ -9,7 +9,7 @@ public enum PointerState
     InNormalMovement
 }
 
-struct PointerMovementState
+public struct PointerMovementState
 {
     public PointerState State;
     public Vector2 PositionScreen;
@@ -23,11 +23,11 @@ struct PointerMovementState
 
 public class PointerMovement : MonoBehaviour
 {
-    private const int NumberOfStatesKept = 120;
-    
+    private const int NumberOfStatesKept = 120;   
     private List<PointerMovementState> movements;
 
     [SerializeField] private float jumpMovementThreshold = 10;
+    [SerializeField] private PointerView pointerView;
 
     private void Awake()
     {
@@ -66,5 +66,7 @@ public class PointerMovement : MonoBehaviour
         movements.RemoveAt(0);
 
         Trace.Info(TraceCategory.PointerMovement, $"Movement added: {movementState}");
+
+        pointerView.SetView(movementState);
     }
 }

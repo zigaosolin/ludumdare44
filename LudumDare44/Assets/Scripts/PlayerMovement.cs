@@ -7,6 +7,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private GameObject player;
 
+    [SerializeField]
+    private PointerMovement pointerMovement;
+
     void Awake()
     {
         
@@ -14,6 +17,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Vector2 mousePosition = Input.mousePosition;
+        
     }
 }
