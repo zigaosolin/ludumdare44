@@ -30,6 +30,7 @@ public class PointerMovement : MonoBehaviour
     [SerializeField] private float jumpMovementThreshold = 10;
     [SerializeField] private float jumpMovementThresholdHisteresisDown = 3;
     [SerializeField] private PointerView pointerView;
+    [SerializeField] private int numberOfJumpMovementToConsiderJump = 3;
 
     private void Awake()
     {
@@ -45,7 +46,7 @@ public class PointerMovement : MonoBehaviour
         camera = Camera.main;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         var position = camera.ScreenToWorldPoint(Input.mousePosition);
         position.z = 0;
@@ -59,7 +60,6 @@ public class PointerMovement : MonoBehaviour
         var deltaPosition = movementState.Position - prevMovementState.Position;
         if (prevMovementState.State == PointerState.NotPresent)
         {
-
             movementState.State = PointerState.InNormalMovement;
         }
         else
@@ -92,6 +92,20 @@ public class PointerMovement : MonoBehaviour
 
     public (Vector2 targetLocation, bool isInJumpMovement) GetTarget()
     {
-        return (movements[movements.Count - 1].Position, false);
+        int index = movements.Count - 50;
+        for(int i = 0; i < NumberOfStatesKept; ++i)
+        {
+            index = movements.Count - i - 1;
+            var movement = movements[index];
+            if(movement.State != PointerState.InJumpMovement)
+            {
+                break;
+            }
+        }
+
+        bool isConsideredInJump = movements.Count - index > numberOfJumpMovementToConsiderJump;
+
+        // Last not jump position
+        return (movements[index].Position, isConsideredInJump);
     }
 }

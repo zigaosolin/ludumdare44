@@ -319,7 +319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 765539214}
   pointerMovement: {fileID: 1924147756}
-  normalInterpolateSpeed: 6
+  normalInterpolateSpeed: 100
 --- !u!114 &765539217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,9 +635,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6bfb3984958544287901ebfec7fba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpMovementThreshold: 0.03
-  jumpMovementThresholdHisteresisDown: 0.01
+  jumpMovementThreshold: 0.1
+  jumpMovementThresholdHisteresisDown: 0.003
   pointerView: {fileID: 1924147757}
+  numberOfJumpMovementToConsiderJump: 3
 --- !u!114 &1924147757
 MonoBehaviour:
   m_ObjectHideFlags: 0
