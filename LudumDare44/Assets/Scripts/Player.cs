@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 {
     const float DamageInterval = 0.2f;
 
-    private float HitPoints;
+    public float HitPoints { get; private set; }
     [SerializeField] private float MaxHitPoints;
     [SerializeField] private PlayerUi PlayerUi;
     [SerializeField] private PlayerView playerView;

@@ -27,7 +27,7 @@ public class PointerMovement : MonoBehaviour
     private const int NumberOfStatesKept = 360;
     private const int FramesInNormalToStopJump = 5;
     private List<PointerMovementState> movements;
-    private Camera camera;
+    private Camera mainCamera;
     private float timeSinceLastJump = 100;
 
     [SerializeField] private float jumpMovementThreshold = 10;
@@ -46,12 +46,12 @@ public class PointerMovement : MonoBehaviour
 
     private void Start()
     {
-        camera = Camera.main;       
+        mainCamera = Camera.main;       
     }
 
     void FixedUpdate()
     {
-        var position = camera.ScreenToWorldPoint(Input.mousePosition);
+        var position = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         position.z = 0;
 
         var movementState = new PointerMovementState()
@@ -106,7 +106,7 @@ public class PointerMovement : MonoBehaviour
             }
         }
 
-        var viewportPosition = camera.ScreenToViewportPoint(Input.mousePosition);
+        var viewportPosition = mainCamera.ScreenToViewportPoint(Input.mousePosition);
         bool isOutOfBounds = viewportPosition.x < 0 || viewportPosition.x > 1
             || viewportPosition.y < 0 || viewportPosition.y > 1;
 
@@ -115,7 +115,7 @@ public class PointerMovement : MonoBehaviour
             viewportPosition.x = Mathf.Clamp01(viewportPosition.x);
             viewportPosition.y = Mathf.Clamp01(viewportPosition.y);
 
-            movementState.Position = camera.ViewportToWorldPoint(viewportPosition);
+            movementState.Position = mainCamera.ViewportToWorldPoint(viewportPosition);
             movementState.SmoothState = PointerState.NotPresent;
             movementState.ActualState = PointerState.NotPresent;
         }
