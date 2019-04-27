@@ -28,6 +28,7 @@ public class PointerMovement : MonoBehaviour
     private Camera camera;
 
     [SerializeField] private float jumpMovementThreshold = 10;
+    [SerializeField] private float jumpMovementThresholdHisteresisDown = 3;
     [SerializeField] private PointerView pointerView;
 
     private void Awake()
@@ -63,7 +64,10 @@ public class PointerMovement : MonoBehaviour
         }
         else
         {
-            bool isFastMovement = deltaPosition.magnitude > jumpMovementThreshold;
+            float jumpMovementThresh = prevMovementState.State == PointerState.InJumpMovement ?
+                jumpMovementThresholdHisteresisDown : jumpMovementThreshold;
+
+            bool isFastMovement = deltaPosition.magnitude > jumpMovementThresh;
             movementState.State = isFastMovement ? PointerState.InJumpMovement : PointerState.InNormalMovement;
         }
 
