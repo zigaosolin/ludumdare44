@@ -112,6 +112,10 @@ public class PointerMovement : MonoBehaviour
 
         if(isOutOfBounds)
         {
+            viewportPosition.x = Mathf.Clamp01(viewportPosition.x);
+            viewportPosition.y = Mathf.Clamp01(viewportPosition.y);
+
+            movementState.Position = camera.ViewportToWorldPoint(viewportPosition);
             movementState.SmoothState = PointerState.NotPresent;
             movementState.ActualState = PointerState.NotPresent;
         }
