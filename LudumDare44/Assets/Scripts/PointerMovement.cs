@@ -13,6 +13,11 @@ struct PointerMovementState
 {
     public PointerState State;
     public Vector2 PositionScreen;
+
+    public override string ToString()
+    {
+        return $"({PositionScreen.x}, {PositionScreen.y}, {State})";
+    }
 }
 
 
@@ -60,7 +65,6 @@ public class PointerMovement : MonoBehaviour
         movements.Add(movementState);
         movements.RemoveAt(0);
 
-
-        
+        Trace.Info(TraceCategory.PointerMovement, $"Movement added: {movementState}");
     }
 }
