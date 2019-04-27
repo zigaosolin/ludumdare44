@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float MaxHitPoints;
 
+    [SerializeField]
+    private PlayerUi PlayerUi;
+
     private List<DamageAreaData> enteredAreas = new List<DamageAreaData>();
 
     private void Awake()
@@ -60,7 +63,8 @@ public class Player : MonoBehaviour
         Trace.Info(TraceCategory.Damage, $"Deal damage {amount}");
 
         HitPoints -= amount;
-        if(HitPoints < 0)
+        PlayerUi.SetHitPoint(HitPoints, MaxHitPoints);
+        if (HitPoints < 0)
         {
             Die();
         }
