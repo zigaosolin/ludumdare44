@@ -21,10 +21,7 @@ public class PointerView : MonoBehaviour
                 break;
         }
 
-        var position = Camera.main.ScreenToWorldPoint(state.PositionScreen);
-        position.z = 0;
-        gameObject.transform.position = position;
-
+        gameObject.transform.position = state.Position;
         Trace.Info(TraceCategory.PointerLocation, $"New loc: {gameObject.transform.position}");
     }
 }

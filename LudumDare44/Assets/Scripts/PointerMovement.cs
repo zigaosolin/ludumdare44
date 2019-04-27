@@ -12,19 +12,20 @@ public enum PointerState
 public struct PointerMovementState
 {
     public PointerState State;
-    public Vector2 PositionScreen;
+    public Vector2 Position;
 
     public override string ToString()
     {
-        return $"({PositionScreen.x}, {PositionScreen.y}, {State})";
+        return $"({Position.x}, {Position.y}, {State})";
     }
 }
 
 
 public class PointerMovement : MonoBehaviour
 {
-    private const int NumberOfStatesKept = 120;   
+    private const int NumberOfStatesKept = 120;
     private List<PointerMovementState> movements;
+    private Camera camera;
 
     [SerializeField] private float jumpMovementThreshold = 10;
     [SerializeField] private PointerView pointerView;
@@ -32,32 +33,48 @@ public class PointerMovement : MonoBehaviour
     private void Awake()
     {
         movements = new List<PointerMovementState>(NumberOfStatesKept + 1);
-        for(int i = 0; i < NumberOfStatesKept; ++i)
+        for (int i = 0; i < NumberOfStatesKept; ++i)
         {
             movements.Add(new PointerMovementState() { State = PointerState.NotPresent });
         }
     }
 
+    private void Start()
+    {
+        camera = Camera.main;
+    }
+
 
     void FixedUpdate()
     {
+        var position = camera.ScreenToWorldPoint(Input.mousePosition);
+        position.z = 0;
+
         var movementState = new PointerMovementState()
         {
-            PositionScreen = Input.mousePosition
+            Position = position
         };
 
         var prevMovementState = movements[movements.Count - 1];
-        var deltaPosition = movementState.PositionScreen - prevMovementState.PositionScreen;
-        switch (prevMovementState.State)
+        var deltaPosition = movementState.Position - prevMovementState.Position;
+        if (prevMovementState.State == PointerState.NotPresent)
         {
-            case PointerState.NotPresent:
-                movementState.State = PointerState.InNormalMovement;
-                break;
-            case PointerState.InNormalMovement:
-            case PointerState.InJumpMovement:
-                bool isFastMovement = deltaPosition.magnitude > jumpMovementThreshold;
-                movementState.State = isFastMovement ? PointerState.InJumpMovement : PointerState.InNormalMovement;             
-                break;
+
+            movementState.State = PointerState.InNormalMovement;
+        }
+        else
+        {
+            bool isFastMovement = deltaPosition.magnitude > jumpMovementThreshold;
+            movementState.State = isFastMovement ? PointerState.InJumpMovement : PointerState.InNormalMovement;
+        }
+
+        var viewportPosition = camera.ScreenToViewportPoint(Input.mousePosition);
+        bool isOutOfBounds = viewportPosition.x < 0 || viewportPosition.x > 1
+            || viewportPosition.y < 0 || viewportPosition.y > 1;
+
+        if(isOutOfBounds)
+        {
+            movementState.State = PointerState.NotPresent;
         }
 
         // This can be implemented more efficiently by circular buffer

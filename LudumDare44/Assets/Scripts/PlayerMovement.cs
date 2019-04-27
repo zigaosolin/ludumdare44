@@ -10,10 +10,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private PointerMovement pointerMovement;
 
-    void Awake()
-    {
-        
-    }
+    [SerializeField]
+    private float normalInterpolateSpeed = 3;
 
     void Update()
     {
