@@ -60,7 +60,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f12cf1cf9ba6784b9a42d62753cfaef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHitPoints: 120
   PlayerUi: {fileID: 0}
   playerView: {fileID: 7929054049524661605}
   pointerMovement: {fileID: 0}
@@ -88,8 +87,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  JumpDuration: 0.3
-  InterpolateSpeed: 3
+  BaseJumpDuration: 0.4
+  BaseInterpolateSpeed: 3
 --- !u!212 &7929054049524661600
 SpriteRenderer:
   m_ObjectHideFlags: 0

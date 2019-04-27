@@ -3969,5 +3969,15 @@ PrefabInstance:
       propertyPath: pointerMovement
       value: 
       objectReference: {fileID: 1924147756}
+    - target: {fileID: 7929054049524661601, guid: e0cba5c8f5e23ac4485bbc1f09fa1786,
+        type: 3}
+      propertyPath: BaseJumpDuration
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7929054049524661601, guid: e0cba5c8f5e23ac4485bbc1f09fa1786,
+        type: 3}
+      propertyPath: BaseInterpolateSpeed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0cba5c8f5e23ac4485bbc1f09fa1786, type: 3}

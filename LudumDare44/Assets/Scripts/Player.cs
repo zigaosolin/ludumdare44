@@ -12,9 +12,17 @@ class DamageAreaData
 public class Player : MonoBehaviour
 {
     const float DamageInterval = 0.2f;
+    private int hitPoints;
 
-    public float HitPoints { get; private set; }
-    [SerializeField] private float MaxHitPoints;
+    public int HitPoints
+    {
+        get => hitPoints;
+        set
+        {
+            hitPoints = value;
+            PlayerUi.SetHitPoint(hitPoints, 100);
+        }
+    }
     [SerializeField] private PlayerUi PlayerUi;
     [SerializeField] private PlayerView playerView;
     [SerializeField] private PointerMovement pointerMovement;
@@ -28,12 +36,18 @@ public class Player : MonoBehaviour
 
 
     // Properties that are leveled up
-    public float JumpDuration = 0.3f;
-    public float InterpolateSpeed = 3.0f;
+    public float BaseJumpDuration = 0.3f;
+    public float BaseInterpolateSpeed = 3.0f;
+
+    public float JumpDuration { get; set; }
+    public float InterpolateSpeed { get; set; }
 
     private void Awake()
     {
-        HitPoints = MaxHitPoints;
+        HitPoints = 100;
+
+        JumpDuration = BaseJumpDuration;
+        InterpolateSpeed = BaseInterpolateSpeed;
     }
 
     public void EnterDamageZone(DamageArea area)
@@ -126,8 +140,7 @@ public class Player : MonoBehaviour
     {
         Trace.Info(TraceCategory.Damage, $"Deal damage {amount}");
 
-        HitPoints -= amount;
-        PlayerUi.SetHitPoint(HitPoints, MaxHitPoints);
+        HitPoints -= (int)amount;
         if (HitPoints < 0)
         {
             Die();

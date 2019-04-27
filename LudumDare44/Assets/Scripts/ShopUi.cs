@@ -34,7 +34,7 @@ public class ShopUi : MonoBehaviour
 
     private void SetUpgrade(TextMeshProUGUI label, UpgradeInfo upgrade, int availableHp)
     {
-        var button = upgrade1Label.transform.parent.GetComponent<Button>();
+        var button = label.transform.parent.GetComponent<Button>();
         if(upgrade == null)
         {
             button.gameObject.SetActive(false);
@@ -48,7 +48,7 @@ public class ShopUi : MonoBehaviour
             $"+{upgrade.UpgradePercent}%\n" +
             $"{upgrade.HPCost} HP";
         
-        button.enabled = availableHp > upgrade.HPCost;
+        button.interactable = availableHp > upgrade.HPCost;
     }
 
     public void BuyLeftClicked()

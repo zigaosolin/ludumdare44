@@ -27,31 +27,31 @@ public class Shop : MonoBehaviour
         new UpgradeInfo() {
             Type = UpgradeType.Speed,
             UpgradeLevel = 1,
-            UpgradePercent = 20,
+            UpgradePercent = 30,
             HPCost = 20
         },
         new UpgradeInfo() {
             Type = UpgradeType.Speed,
             UpgradeLevel = 2,
-            UpgradePercent = 40,
+            UpgradePercent = 60,
             HPCost = 30
         },
         new UpgradeInfo() {
             Type = UpgradeType.Speed,
             UpgradeLevel = 3,
-            UpgradePercent = 60,
+            UpgradePercent = 90,
             HPCost = 35
         },
         new UpgradeInfo() {
             Type = UpgradeType.Speed,
             UpgradeLevel = 4,
-            UpgradePercent = 80,
+            UpgradePercent = 140,
             HPCost = 40
         },
         new UpgradeInfo() {
             Type = UpgradeType.Speed,
             UpgradeLevel = 5,
-            UpgradePercent = 100,
+            UpgradePercent = 200,
             HPCost = 50
         },
         null
@@ -62,31 +62,31 @@ public class Shop : MonoBehaviour
         new UpgradeInfo() {
             Type = UpgradeType.Jump,
             UpgradeLevel = 1,
-            UpgradePercent = 20,
+            UpgradePercent = 30,
             HPCost = 20
         },
         new UpgradeInfo() {
             Type = UpgradeType.Jump,
             UpgradeLevel = 2,
-            UpgradePercent = 40,
+            UpgradePercent = 60,
             HPCost = 30
         },
         new UpgradeInfo() {
             Type = UpgradeType.Jump,
             UpgradeLevel = 3,
-            UpgradePercent = 60,
+            UpgradePercent = 90,
             HPCost = 35
         },
         new UpgradeInfo() {
             Type = UpgradeType.Jump,
             UpgradeLevel = 4,
-            UpgradePercent = 80,
+            UpgradePercent = 140,
             HPCost = 40
         },
         new UpgradeInfo() {
             Type = UpgradeType.Jump,
             UpgradeLevel = 5,
-            UpgradePercent = 100,
+            UpgradePercent = 200,
             HPCost = 50
         },
         null
@@ -100,13 +100,17 @@ public class Shop : MonoBehaviour
         shopUi.Show((int)player.HitPoints, speedUpgrades[currentSpeed], jumpUpgrades[currentJump],
             (x) =>
             {
+                player.HitPoints -= x.HPCost;
+
                 if (x.Type == UpgradeType.Speed)
                 {
                     ++currentSpeed;
+                    player.InterpolateSpeed = player.BaseInterpolateSpeed * (1.0f + x.UpgradePercent * 0.01f);
                 }
                 else
                 {
                     ++currentJump;
+                    player.JumpDuration = player.BaseJumpDuration / (1.0f + x.UpgradePercent * 0.01f);
                 }
                 ShowShop(onCompleted);
             },
