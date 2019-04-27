@@ -26,11 +26,13 @@ public class PointerMovement : MonoBehaviour
     private const int NumberOfStatesKept = 120;
     private List<PointerMovementState> movements;
     private Camera camera;
+    private float timeSinceLastJump = 100;
 
     [SerializeField] private float jumpMovementThreshold = 10;
     [SerializeField] private float jumpMovementThresholdHisteresisDown = 3;
     [SerializeField] private PointerView pointerView;
     [SerializeField] private int numberOfJumpMovementToConsiderJump = 3;
+    [SerializeField] private float jumpCooldown = 0.5f;
 
     private void Awake()
     {
@@ -68,7 +70,9 @@ public class PointerMovement : MonoBehaviour
                 jumpMovementThresholdHisteresisDown : jumpMovementThreshold;
 
             bool isFastMovement = deltaPosition.magnitude > jumpMovementThresh;
-            movementState.State = isFastMovement ? PointerState.InJumpMovement : PointerState.InNormalMovement;
+            bool canJump = timeSinceLastJump > jumpCooldown || prevMovementState.State == PointerState.InJumpMovement;
+
+            movementState.State = (isFastMovement && canJump) ? PointerState.InJumpMovement : PointerState.InNormalMovement;
         }
 
         var viewportPosition = camera.ScreenToViewportPoint(Input.mousePosition);
@@ -84,6 +88,14 @@ public class PointerMovement : MonoBehaviour
         // but there is no implementation directly in C#
         movements.Add(movementState);
         movements.RemoveAt(0);
+
+        if(movementState.State == PointerState.InJumpMovement)
+        {
+            timeSinceLastJump = 0;
+        } else
+        {
+            timeSinceLastJump += Time.deltaTime;
+        }
 
         Trace.Info(TraceCategory.PointerMovement, $"Movement added: {movementState}");
 
