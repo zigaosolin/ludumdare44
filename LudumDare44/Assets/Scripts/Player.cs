@@ -17,10 +17,18 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerUi PlayerUi;
     [SerializeField] private PlayerView playerView;
     [SerializeField] private PointerMovement pointerMovement;
-    [SerializeField] private float normalInterpolateSpeed = 3;
+    [SerializeField] private AnimationCurve jumpCurve;
 
     private bool wasPreviousInJump = false;
+    private Vector2 jumpLandLocation;
+    private Vector2 jumpStartLocation;
+    private float jumpTimeNormalized;
     private List<DamageAreaData> enteredAreas = new List<DamageAreaData>();
+
+
+    // Properties that are leveled up
+    public float JumpDuration = 0.3f;
+    public float InterpolateSpeed = 3.0f;
 
     private void Awake()
     {
@@ -53,18 +61,31 @@ public class Player : MonoBehaviour
 
     private void UpdatePosition()
     {
+        if (jumpTimeNormalized > 0.0f)
+        {
+            jumpTimeNormalized -= Time.deltaTime / JumpDuration;
+            if (jumpTimeNormalized < 0)
+                jumpTimeNormalized = 0;
+            transform.position = Vector2.Lerp(jumpStartLocation, jumpLandLocation,
+                jumpCurve.Evaluate(1 - jumpTimeNormalized));
+
+            playerView.SetJumpMode(JumpMode.InJump);
+            return;
+        }
+
         var (targetPosition, isInJumpMovement) = pointerMovement.GetTarget();
 
         playerView.SetJumpMode(isInJumpMovement ? JumpMode.WaitingForJumpSequence : JumpMode.Normal);
 
         if (wasPreviousInJump && !isInJumpMovement)
         {
-            transform.position = targetPosition;
+            SetupJump(targetPosition);
         }
-        else if(!isInJumpMovement)
+        else if (!isInJumpMovement)
         {
             var currentPosition = transform.position;
-            transform.position = Vector2.Lerp(currentPosition, targetPosition, Time.deltaTime * normalInterpolateSpeed);
+            transform.position = Vector2.Lerp(currentPosition, targetPosition,
+                Time.deltaTime * InterpolateSpeed);
         }
         else
         {
@@ -74,8 +95,20 @@ public class Player : MonoBehaviour
         wasPreviousInJump = isInJumpMovement;
     }
 
+    private void SetupJump(Vector2 landLocation)
+    {
+        jumpLandLocation = landLocation;
+        jumpStartLocation = transform.position;
+        jumpTimeNormalized = 1.0f;
+    }
+
     private void UpdateDamageAreas()
     {
+        // No damage in jump
+        if (jumpTimeNormalized > 0.0f)
+            return;
+        
+
         for (int i = 0; i < enteredAreas.Count; ++i)
         {
             var areaData = enteredAreas[i];
