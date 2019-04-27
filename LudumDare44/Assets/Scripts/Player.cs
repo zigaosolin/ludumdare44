@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private float HitPoints;
     [SerializeField] private float MaxHitPoints;
     [SerializeField] private PlayerUi PlayerUi;
+    [SerializeField] private PlayerView playerView;
     [SerializeField] private PointerMovement pointerMovement;
     [SerializeField] private float normalInterpolateSpeed = 3;
 
@@ -54,14 +55,20 @@ public class Player : MonoBehaviour
     {
         var (targetPosition, isInJumpMovement) = pointerMovement.GetTarget();
 
+        playerView.SetJumpMode(isInJumpMovement ? JumpMode.WaitingForJumpSequence : JumpMode.Normal);
+
         if (wasPreviousInJump && !isInJumpMovement)
         {
             transform.position = targetPosition;
         }
-        else
+        else if(!isInJumpMovement)
         {
             var currentPosition = transform.position;
             transform.position = Vector2.Lerp(currentPosition, targetPosition, Time.deltaTime * normalInterpolateSpeed);
+        }
+        else
+        {
+            // No transform, wait at location
         }
 
         wasPreviousInJump = isInJumpMovement;

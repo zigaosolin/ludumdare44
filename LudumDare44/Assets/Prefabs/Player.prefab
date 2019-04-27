@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd9cc8a3ab1b9784fa9108383a515136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 7929054049524661600}
 --- !u!114 &7929054049524661601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHitPoints: 120
   PlayerUi: {fileID: 0}
+  playerView: {fileID: 7929054049524661605}
   pointerMovement: {fileID: 0}
   normalInterpolateSpeed: 3
 --- !u!212 &7929054049524661600

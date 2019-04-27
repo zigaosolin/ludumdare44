@@ -2,17 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum JumpMode
+{
+    Normal,
+    WaitingForJumpSequence,
+    InJump
+}
+
 public class PlayerView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
-    // Update is called once per frame
-    void Update()
+    public void SetJumpMode(JumpMode jumpMode)
     {
-        
+        switch(jumpMode)
+        {
+            case JumpMode.InJump:
+                spriteRenderer.color = Color.blue;
+                break;
+            case JumpMode.Normal:
+                spriteRenderer.color = Color.white;
+                break;
+            case JumpMode.WaitingForJumpSequence:
+                spriteRenderer.color = Color.yellow;
+                break;
+        }
     }
 }
