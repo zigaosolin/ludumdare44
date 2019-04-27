@@ -5,12 +5,14 @@ public enum TraceCategory
 {
     None = 0,
     PointerMovement = 1,
-    PointerLocation = 2
+    PointerLocation = 2,
+    Damage = 4,
+    Player = 8
 }
 
 public static class Trace 
 {
-    public static TraceCategory EnabledMask = TraceCategory.None;
+    public static TraceCategory EnabledMask = TraceCategory.Damage | TraceCategory.Player;
 
     // TODO: strip this code in the end!
     public static void Info(TraceCategory category, string message)
