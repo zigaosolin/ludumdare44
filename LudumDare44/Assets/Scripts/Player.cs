@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
         get => hitPoints;
         set
         {
-            hitPoints = value;
+            hitPoints = Mathf.Min(100, value);
             PlayerUi.SetHitPoint(hitPoints, 100);
         }
     }
