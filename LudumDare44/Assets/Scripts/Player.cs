@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        HitPoints = 100;
+        HitPoints = 70;
 
         JumpDuration = BaseJumpDuration;
         InterpolateSpeed = BaseInterpolateSpeed;
