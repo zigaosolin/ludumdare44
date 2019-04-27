@@ -8,7 +8,7 @@ public class PointerView : MonoBehaviour
 
     public void SetView(PointerMovementState state)
     {
-        switch(state.State)
+        switch(state.SmoothState)
         {
             case PointerState.InJumpMovement:
                 spriteRenderer.color = Color.yellow;

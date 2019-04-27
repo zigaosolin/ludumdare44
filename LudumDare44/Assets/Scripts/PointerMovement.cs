@@ -11,12 +11,13 @@ public enum PointerState
 
 public struct PointerMovementState
 {
-    public PointerState State;
+    public PointerState SmoothState;
     public Vector2 Position;
+    public PointerState ActualState;
 
     public override string ToString()
     {
-        return $"({Position.x}, {Position.y}, {State})";
+        return $"({Position.x}, {Position.y}, {SmoothState})";
     }
 }
 
@@ -24,6 +25,7 @@ public struct PointerMovementState
 public class PointerMovement : MonoBehaviour
 {
     private const int NumberOfStatesKept = 120;
+    private const int FramesInNormalToStopJump = 5;
     private List<PointerMovementState> movements;
     private Camera camera;
     private float timeSinceLastJump = 100;
@@ -38,7 +40,7 @@ public class PointerMovement : MonoBehaviour
         movements = new List<PointerMovementState>(NumberOfStatesKept + 1);
         for (int i = 0; i < NumberOfStatesKept; ++i)
         {
-            movements.Add(new PointerMovementState() { State = PointerState.NotPresent });
+            movements.Add(new PointerMovementState() { SmoothState = PointerState.NotPresent });
         }
     }
 
@@ -59,19 +61,49 @@ public class PointerMovement : MonoBehaviour
 
         var prevMovementState = movements[movements.Count - 1];
         var deltaPosition = movementState.Position - prevMovementState.Position;
-        if (prevMovementState.State == PointerState.NotPresent)
+        if (prevMovementState.SmoothState == PointerState.NotPresent)
         {
-            movementState.State = PointerState.InNormalMovement;
+            movementState.SmoothState = PointerState.InNormalMovement;
+            movementState.ActualState = PointerState.InNormalMovement;
         }
         else
         {
-            float jumpMovementThresh = prevMovementState.State == PointerState.InJumpMovement ?
+            // Needs to drop below some threshold to be considered normal again if already in jump
+            float jumpMovementThresh = prevMovementState.SmoothState == PointerState.InJumpMovement ?
                 jumpMovementThresholdHisteresisDown : jumpMovementThreshold;
 
             bool isFastMovement = deltaPosition.magnitude > jumpMovementThresh;
-            bool canJump = timeSinceLastJump > jumpCooldown || prevMovementState.State == PointerState.InJumpMovement;
+            bool canJump = timeSinceLastJump > jumpCooldown || 
+                prevMovementState.SmoothState == PointerState.InJumpMovement;
 
-            movementState.State = (isFastMovement && canJump) ? PointerState.InJumpMovement : PointerState.InNormalMovement;
+            movementState.ActualState = (isFastMovement && canJump) ?
+                PointerState.InJumpMovement : PointerState.InNormalMovement;
+
+            if(movementState.ActualState == PointerState.InNormalMovement || 
+                prevMovementState.SmoothState == PointerState.InJumpMovement)
+            {
+                bool stopJump = true;
+                for(int i = 0; i < FramesInNormalToStopJump; ++i)
+                {
+                    var movement = movements[movements.Count - i - 1];
+                    if(movement.ActualState == PointerState.InJumpMovement)
+                    {
+                        stopJump = false;
+                        break;
+                    }            
+                }
+
+                if(stopJump)
+                {
+                    movementState.SmoothState = PointerState.InNormalMovement;
+                } else
+                {
+                    movementState.SmoothState = PointerState.InJumpMovement;
+                }
+            } else
+            {
+                movementState.SmoothState = movementState.ActualState;
+            }
         }
 
         var viewportPosition = camera.ScreenToViewportPoint(Input.mousePosition);
@@ -80,7 +112,8 @@ public class PointerMovement : MonoBehaviour
 
         if(isOutOfBounds)
         {
-            movementState.State = PointerState.NotPresent;
+            movementState.SmoothState = PointerState.NotPresent;
+            movementState.ActualState = PointerState.NotPresent;
         }
 
         // This can be implemented more efficiently by circular buffer
@@ -88,7 +121,7 @@ public class PointerMovement : MonoBehaviour
         movements.Add(movementState);
         movements.RemoveAt(0);
 
-        if(movementState.State == PointerState.InJumpMovement)
+        if(movementState.SmoothState == PointerState.InJumpMovement)
         {
             timeSinceLastJump = 0;
         } else
@@ -108,7 +141,7 @@ public class PointerMovement : MonoBehaviour
         {
             index = movements.Count - i - 1;
             var movement = movements[index];
-            if(movement.State != PointerState.InJumpMovement)
+            if(movement.SmoothState != PointerState.InJumpMovement)
             {
                 break;
             }
