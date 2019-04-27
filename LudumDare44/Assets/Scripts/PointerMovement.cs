@@ -31,7 +31,6 @@ public class PointerMovement : MonoBehaviour
     [SerializeField] private float jumpMovementThreshold = 10;
     [SerializeField] private float jumpMovementThresholdHisteresisDown = 3;
     [SerializeField] private PointerView pointerView;
-    [SerializeField] private int numberOfJumpMovementToConsiderJump = 3;
     [SerializeField] private float jumpCooldown = 0.5f;
 
     private void Awake()
@@ -115,7 +114,7 @@ public class PointerMovement : MonoBehaviour
             }
         }
 
-        bool isConsideredInJump = movements.Count - index > numberOfJumpMovementToConsiderJump;
+        bool isConsideredInJump = movements.Count - index > 1;
 
         // Last not jump position
         return (movements[index].Position, isConsideredInJump);

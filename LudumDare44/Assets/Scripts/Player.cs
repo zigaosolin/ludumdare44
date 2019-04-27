@@ -13,11 +13,12 @@ public class Player : MonoBehaviour
     const float DamageInterval = 0.2f;
 
     private float HitPoints;
-    [SerializeField]
-    private float MaxHitPoints;
+    [SerializeField] private float MaxHitPoints;
+    [SerializeField] private PlayerUi PlayerUi;
+    [SerializeField] private PointerMovement pointerMovement;
+    [SerializeField] private float normalInterpolateSpeed = 3;
 
-    [SerializeField]
-    private PlayerUi PlayerUi;
+    private bool wasPreviousInJump = false;
 
     private List<DamageAreaData> enteredAreas = new List<DamageAreaData>();
 
@@ -46,11 +47,34 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        for(int i = 0; i < enteredAreas.Count; ++i)
+        UpdatePosition();
+        UpdateDamageAreas();
+    }
+
+    private void UpdatePosition()
+    {
+        var (targetPosition, isInJumpMovement) = pointerMovement.GetTarget();
+
+        if (wasPreviousInJump && !isInJumpMovement)
+        {
+            transform.position = targetPosition;
+        }
+        else
+        {
+            var currentPosition = transform.position;
+            transform.position = Vector2.Lerp(currentPosition, targetPosition, Time.deltaTime * normalInterpolateSpeed);
+        }
+
+        wasPreviousInJump = isInJumpMovement;
+    }
+
+    private void UpdateDamageAreas()
+    {
+        for (int i = 0; i < enteredAreas.Count; ++i)
         {
             var areaData = enteredAreas[i];
             areaData.NextDamageTime -= Time.deltaTime;
-            if(areaData.NextDamageTime < 0)
+            if (areaData.NextDamageTime < 0)
             {
                 DealDamage(areaData.Area.DamageAmount);
                 areaData.NextDamageTime = DamageInterval;
