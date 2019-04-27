@@ -20,5 +20,11 @@ public class PointerView : MonoBehaviour
                 spriteRenderer.color = Color.red;
                 break;
         }
+
+        var position = Camera.main.ScreenToWorldPoint(state.PositionScreen);
+        position.z = 0;
+        gameObject.transform.position = position;
+
+        Trace.Info(TraceCategory.PointerLocation, $"New loc: {gameObject.transform.position}");
     }
 }
