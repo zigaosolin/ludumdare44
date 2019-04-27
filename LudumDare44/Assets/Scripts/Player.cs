@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 class DamageAreaData
 {
@@ -136,6 +137,6 @@ public class Player : MonoBehaviour
     private void Die()
     {
         Trace.Info(TraceCategory.Player, "Died");
-        HitPoints = MaxHitPoints;
+        SceneManager.LoadScene(0);
     }
 }
