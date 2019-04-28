@@ -61,6 +61,8 @@ public class PointerMovement : MonoBehaviour
 
         var prevMovementState = movements[movements.Count - 1];
         var deltaPosition = movementState.Position - prevMovementState.Position;
+        deltaPosition.y -= Time.fixedDeltaTime * 0.12f;
+
         if (prevMovementState.SmoothState == PointerState.NotPresent)
         {
             movementState.SmoothState = PointerState.InNormalMovement;

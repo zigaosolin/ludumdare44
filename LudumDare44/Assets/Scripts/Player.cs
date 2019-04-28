@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
 
         playerView.SetJumpMode(isInJumpMovement ? JumpMode.WaitingForJumpSequence : JumpMode.Normal);
 
+        PreparingToJump = false;
         if (wasPreviousInJump && !isInJumpMovement)
         {
             SetupJump(targetPosition);
@@ -108,10 +109,13 @@ public class Player : MonoBehaviour
             {
                 playerView.JumpPrepareEvent();
             }
+            PreparingToJump = true;
         }
 
         wasPreviousInJump = isInJumpMovement;
     }
+
+    public bool PreparingToJump { get; private set; }
 
     private void SetupJump(Vector2 landLocation)
     {
