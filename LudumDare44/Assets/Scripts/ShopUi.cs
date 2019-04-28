@@ -44,9 +44,9 @@ public class ShopUi : MonoBehaviour
         button.gameObject.SetActive(true);
 
         label.text =
-            $"{upgrade.Type} ({upgrade.UpgradeLevel}/5)\n" +
-            $"+{upgrade.UpgradePercent}%\n" +
-            $"{upgrade.HPCost} HP";
+            $"+{upgrade.UpgradePercent}% {upgrade.Type}\n" +
+            $"Level: {upgrade.UpgradeLevel}/5\n" +
+            $"Cost: {upgrade.HPCost} HP";
         
         button.interactable = availableHp > upgrade.HPCost;
     }
