@@ -154,6 +154,6 @@ public class Player : MonoBehaviour
     private void Die()
     {
         Trace.Info(TraceCategory.Player, "Died");
-        SceneManager.LoadScene(0);
+        FindObjectOfType<Game>().Died();
     }
 }
