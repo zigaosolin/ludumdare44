@@ -30,7 +30,7 @@ public class ShopUi : MonoBehaviour
 
         gameObject.SetActive(true);
 
-        hpLabel.text = $"{availableHp} HP available";
+        hpLabel.text = $"{availableHp} Life Available";
         SetUpgrade(upgrade1Label, upgrade1, availableHp);
         SetUpgrade(upgrade2Label, upgrade2, availableHp);
     }
