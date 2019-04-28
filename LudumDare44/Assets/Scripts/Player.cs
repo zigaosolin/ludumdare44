@@ -121,7 +121,12 @@ public class Player : MonoBehaviour
     {
         // No damage in jump
         if (jumpTimeNormalized > 0.0f)
+        {
+            playerView.TakeDamage(false);
             return;
+        }
+
+        playerView.TakeDamage(enteredAreas.Count > 0);
 
         bool dealtDamage = false;
         for (int i = 0; i < enteredAreas.Count; ++i)
