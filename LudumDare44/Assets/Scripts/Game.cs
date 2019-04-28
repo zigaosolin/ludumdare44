@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,13 +10,25 @@ public class Game : MonoBehaviour
     [SerializeField] Player player;
     [SerializeField] Shop shop;
     [SerializeField] GameObject diedDialog;
+    [SerializeField] TextMeshProUGUI diedOrFinishedLabel;
     [SerializeField] GameObject startDialog;
     [SerializeField] float gameStart;
+    [SerializeField] float gameEnd;
 
     private void Start()
     {
         player.transform.position = new Vector3(0, gameStart, 0);
         cameraMovement.transform.position = new Vector3(0, gameStart, -10);
+        SetPaused(true);
+    }
+
+    private void Update()
+    {
+        if(cameraMovement.transform.position.y > gameEnd)
+        {
+            diedOrFinishedLabel.text = "Game Completed";
+            Died();
+        }        
     }
 
     public void TriggerShop()
