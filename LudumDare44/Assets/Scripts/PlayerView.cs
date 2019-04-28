@@ -21,6 +21,9 @@ public class PlayerView : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip damageSfx;
+    [SerializeField] private AudioClip healthPickedSfx;
+    [SerializeField] private AudioClip jumpPrepare;
+    [SerializeField] private AudioClip jumpExecute;
 
     private int dealtDamageFramesOpen = 5;
 
@@ -56,6 +59,26 @@ public class PlayerView : MonoBehaviour
     public void DamageEvent()
     {
         audioSource.PlayOneShot(damageSfx, Random.Range(0.8f, 1.3f));
+    }
+
+    public void HealthPickedEvent()
+    {
+        audioSource.PlayOneShot(healthPickedSfx, Random.Range(0.8f, 1.2f));
+    }
+
+    public void JumpPrepareEvent()
+    {
+        audioSource.clip = jumpPrepare;
+        audioSource.volume = Random.Range(0.8f, 1.2f);
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
+    public void JumpedEvent()
+    {
+        audioSource.Stop();
+        audioSource.loop = false;
+        audioSource.PlayOneShot(jumpExecute, Random.Range(0.8f, 1.2f));
     }
 
     private void SetEmission(ParticleSystem which)

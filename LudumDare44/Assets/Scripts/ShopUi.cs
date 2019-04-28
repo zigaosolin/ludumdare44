@@ -11,6 +11,9 @@ public class ShopUi : MonoBehaviour
     [SerializeField] private TextMeshProUGUI upgrade1Label;
     [SerializeField] private TextMeshProUGUI upgrade2Label;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip confirm;
+
     Action<UpgradeInfo> boughtCallback;
     Action closeCallback;
     UpgradeInfo upgradeLeft;
@@ -53,16 +56,19 @@ public class ShopUi : MonoBehaviour
 
     public void BuyLeftClicked()
     {
+        audioSource.PlayOneShot(confirm);
         boughtCallback?.Invoke(upgradeLeft);
     }
 
     public void BuyRightClicked()
     {
+        audioSource.PlayOneShot(confirm);
         boughtCallback?.Invoke(upgradeRight);
     }
 
     public void DoneClocked()
     {
+        audioSource.PlayOneShot(confirm);
         closeCallback?.Invoke();
     }
 

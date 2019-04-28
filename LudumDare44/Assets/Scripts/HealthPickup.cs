@@ -12,6 +12,7 @@ public class HealthPickup : MonoBehaviour
             return;
 
         collision.GetComponent<Player>().HitPoints += RegainAmount;
+        collision.GetComponent<PlayerView>().HealthPickedEvent();
 
         Destroy(gameObject);
     }

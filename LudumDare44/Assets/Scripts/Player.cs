@@ -104,7 +104,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // No transform, wait at location
+            if(!wasPreviousInJump)
+            {
+                playerView.JumpPrepareEvent();
+            }
         }
 
         wasPreviousInJump = isInJumpMovement;
@@ -115,6 +118,8 @@ public class Player : MonoBehaviour
         jumpLandLocation = landLocation;
         jumpStartLocation = transform.position;
         jumpTimeNormalized = 1.0f;
+
+        playerView.JumpedEvent();
     }
 
     private void UpdateDamageAreas()

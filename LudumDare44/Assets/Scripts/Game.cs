@@ -15,11 +15,16 @@ public class Game : MonoBehaviour
     [SerializeField] float gameStart;
     [SerializeField] float gameEnd;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip confirm;
+
     private void Start()
     {
         player.transform.position = new Vector3(0, gameStart, 0);
         cameraMovement.transform.position = new Vector3(0, gameStart, -10);
         SetPaused(true);
+        audioSource.PlayOneShot(confirm);
+
     }
 
     private void Update()
@@ -33,6 +38,7 @@ public class Game : MonoBehaviour
 
     public void TriggerShop()
     {
+        audioSource.PlayOneShot(confirm);
         SetPaused(true);
         shop.ShowShop(() => SetPaused(false));
     }
@@ -51,16 +57,19 @@ public class Game : MonoBehaviour
 
     public void RetryButton()
     {
+        audioSource.PlayOneShot(confirm);
         SceneManager.LoadScene(0);
     }
 
     public void ExitButton()
     {
+        audioSource.PlayOneShot(confirm);
         Application.Quit();
     }
 
     public void StartDialogButton()
     {
+        audioSource.PlayOneShot(confirm);
         SetPaused(false);
         startDialog.SetActive(false);
     }
