@@ -105,7 +105,7 @@ public class Shop : MonoBehaviour
                 if (x.Type == UpgradeType.Speed)
                 {
                     ++currentSpeed;
-                    player.InterpolateSpeed = player.BaseInterpolateSpeed * (1.0f + x.UpgradePercent * 0.01f);
+                    player.InterpolateSpeed = player.BaseInterpolateSpeed * (1.0f + 3 * x.UpgradePercent * 0.01f);
                 }
                 else
                 {

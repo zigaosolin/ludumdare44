@@ -122,15 +122,19 @@ public class Player : MonoBehaviour
         // No damage in jump
         if (jumpTimeNormalized > 0.0f)
             return;
-        
 
+        bool dealtDamage = false;
         for (int i = 0; i < enteredAreas.Count; ++i)
         {
             var areaData = enteredAreas[i];
             areaData.NextDamageTime -= Time.deltaTime;
             if (areaData.NextDamageTime < 0)
             {
-                DealDamage(areaData.Area.DamageAmount);
+                if (!dealtDamage)
+                {
+                    DealDamage(areaData.Area.DamageAmount);
+                    dealtDamage = true;
+                }
                 areaData.NextDamageTime = DamageInterval;
             }
         }
