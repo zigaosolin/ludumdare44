@@ -19,6 +19,11 @@ public class PlayerView : MonoBehaviour
 
     [SerializeField] private ParticleSystem damageParticle;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip damageSfx;
+
+    private int dealtDamageFramesOpen = 5;
+
     public void SetJumpMode(JumpMode jumpMode)
     {
         switch(jumpMode)
@@ -40,8 +45,17 @@ public class PlayerView : MonoBehaviour
 
     public void TakeDamage(bool enabled)
     {
+        dealtDamageFramesOpen = enabled ? 5 : dealtDamageFramesOpen;
+
         var emitter = damageParticle.emission;
-        emitter.enabled = enabled;
+        emitter.enabled = dealtDamageFramesOpen > 0;
+
+        dealtDamageFramesOpen--;
+    }
+
+    public void DamageEvent()
+    {
+        audioSource.PlayOneShot(damageSfx, Random.Range(0.8f, 1.3f));
     }
 
     private void SetEmission(ParticleSystem which)

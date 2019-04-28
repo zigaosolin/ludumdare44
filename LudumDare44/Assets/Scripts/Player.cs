@@ -126,8 +126,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        playerView.TakeDamage(enteredAreas.Count > 0);
-
         bool dealtDamage = false;
         for (int i = 0; i < enteredAreas.Count; ++i)
         {
@@ -138,11 +136,14 @@ public class Player : MonoBehaviour
                 if (!dealtDamage)
                 {
                     DealDamage(areaData.Area.DamageAmount);
+                    playerView.DamageEvent();
                     dealtDamage = true;
                 }
                 areaData.NextDamageTime = DamageInterval;
             }
         }
+
+        playerView.TakeDamage(dealtDamage);
     }
 
     private void DealDamage(float amount)
