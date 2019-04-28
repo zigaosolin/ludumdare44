@@ -9,6 +9,7 @@ public class Game : MonoBehaviour
     [SerializeField] Player player;
     [SerializeField] Shop shop;
     [SerializeField] GameObject diedDialog;
+    [SerializeField] GameObject startDialog;
     [SerializeField] float gameStart;
 
     private void Start()
@@ -43,5 +44,11 @@ public class Game : MonoBehaviour
     public void ExitButton()
     {
         Application.Quit();
+    }
+
+    public void StartDialogButton()
+    {
+        SetPaused(false);
+        startDialog.SetActive(false);
     }
 }
